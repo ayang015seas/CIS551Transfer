@@ -1,0 +1,92 @@
+# Problem 1:
+Give step by step instructions on how the key was derived
+
+We used a brute force attack to derive the key, through completing the extra credit.
+
+First, we iterated through all of the possible keylengths. 
+For each keylength, we divide the cipher into (keylength) individual ciphers.
+
+For example, each 7th letter would be put into the 7th individual cipher.
+
+For each individual cipher, we brute force shift it by each of the 26 possible 
+keys. After shifting, the cipher that is closest to the English language
+Using frequency analysis shows us what the best key is to use for that 
+Cipher group as well as the "difference score" between that individual
+Cipher group and the English language.
+
+Through this process, we generate an overall key and average all of the 
+Scores of all individual groups to get a score for the overall key length.
+
+We then find the keylength with the minimal score. The key developed at that 
+Length is the answer. 
+ 
+
+# Problem 2:
+
+2c: briefly describe and explain trend
+
+We can see that when the keylength grows longer, the variance of the 
+Cipher text decreases, which means that it becomes closer to English. 
+The reason for this is a short key will of length 2 for example will 
+Only be able to discretely shift the cipher text by a few possibilities, 
+Which will result in a distribution that is uneven and far off of English. However,
+A longer keylength will result in a more uniform distribution, which in 
+Turn will be closer to English. 
+
+2d: briefly compare and explain results
+
+The mean variance is unlike that which is observed in part B. Since we break 
+Each problem up into a caesar cipher, all of the variances are pretty close to English. 
+This is basically what we expected to see, since the individual ciphers 
+When broken down into discrete groups are going to be very close to 
+English due to the nature of vigenere ciphers, explaining the lack of variance. 
+
+2e: briefly_explain_attack_variant
+Yes, as we can see, the minimum variances calculated for all the other lenghts are still rather far from the variance for English, whereas the minimum variance for the correct
+Key length is extremely low. As a result, we can determine that this is a 
+Variant of the Kasiski attack by repeatedly guessing the length of the 
+Keyword until the one that is closest to English is found.
+
+# Problem 3:
+3a: 
+26 + 26 + 10 = 62 options for each character
+62^8 = 2.1834011e+14 passwords
+2.1834011e+14 / 4 million = 15162.5073323 hours 
+Average case = 7581.25366614 hours 
+
+3b: 7582 bots 
+
+3c: Since a single character is 8 characters == 8 bytes, we have:
+8 * 2.1834011e+14 bytes = 1.7467208e+15 bytes
+
+3d: 
+Number of chains = N / K 
+Each chain stores 16 bytes 
+16 * (N / K) = total bytes
+
+3e: 
+(2.1834011e+14 / 5000) * 16 = 698688337872 bytes
+
+
+3f: 
+Assuming the simplification that each password exists once in the table, we would still need to go through all of the passwords. As a result, we have:
+
+2.1834011e+14 / 2 million = 30325.0146646 hours
+
+3g: 
+First, in terms of the table size, the stored memory size is reduced by a factor of 2500, which greatly improves space efficiency.
+
+Second, in terms of the time to compute the table, the pre-computing time is longer than the brute force attack - specifically about twice as long due to the extra computations needed to reduce in a perfect world where we only need to go over every password once.
+
+Finally, in terms of the cracking time, the hash table is more efficient. Assuming that every password exists in the table, we would have to perform k reducing and hashing operations on our given password to find an endpoint, and another k reducing and hashing operations to actually get the password. Compared to the brute force attack, this is significantly more efficient. 
+
+3h: Answer
+Since our server_secret is unique, the hashed passwords will be completely different and will not be present in a default rainbow table. As a result, the attacker would have to compute an entire rainbow table (extremely time intensive) specifically for this server with this salt. At that point, the attacker might as well brute force the password. 
+
+3i: Answer
+Two ways: first, have a unique salt for every specific user. If two users have the same password and the same hashes, then the hash values will be the same. By randomizing the hash for each user, we prevent the adversary from guessing the salt at all and make precomputing harder. 
+
+Second, make sure the salt is somewhat long. Even a salt can be brute forced if it is short, although it will take a long time. A long salt will take exponentially more time to brute force and thus is beneficial for security. 
+
+# Problem 4 (extra credit):
+Include a short description of your methodology
