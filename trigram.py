@@ -2,8 +2,6 @@ import sys
 
 cipher = """HIZALRGTIGPNUJPRHAEDHYASGEERELSGEKRTRRJLXHTRTPNKDDCPJTZQASZXTZFLPOCDVFZRCBITUPEZXTPDXIFXCRKLWPTCFPPEGTCFQOVOIEGRHIFXTJWCERTDVITGWIAEGTXGUIJFLPRTFZFTXOGERWYMUWTDDCIDGOGRCXWDNJQZAWCTYHOEMHOWWSITGEVPLVYTTNKPRCJRTRFRHGYNDDEHDPZQOYGIRZDWTCLEIWSIFTWRVLGQDUEWLFWAIKBESHWEJWZGYWOCGPVHWETDCRSVIVVELSBECOZRGIHVPPRHWAKEFMZITYLDKFTAKLYHIHTILLPSBPZUPQOSEJXCICUIKEPGOJSVLEAOHTYHTVADNVBLXGIABHESRPYDDYEUTMVQELOHNFVEEYTIEWSIQDMGDYCOALKRRIHWEIWSIGTMVQDMHIIEJFTVTRVSZMBIIEJESHTLUDCQOCAXHXIBIONQWIGHTYDYTSGCVQESTIHVFZQDPNPDYHKWEIHOSSHMIFCSALECOAYHWIJPTPZXOEGZPZPRJDWEFNNFWTRHTLUDCWHDCBKPSKCSCHDWHWAESPVQTNKBZYCLNKKPGCBPRQJXVPTJUTKVIYFXELSHTFFVLCADVULRRNOLDCIOALSHTRUGOPDWPMHCIHHIRDVVUMCHWEJHELSHESXCIOJCIDEWKXTYWSIWGSKHLOZJNTKPWHWEZUSYBIIEJLRRUIJKTRUIRZSDXVTIIFZVDDRRWPNSISRQOKCADVQAEFPCYXEIGIHZVTWOCOLWCEUTYFXCICJTFIWMBTGVNVSHTLUDCTOEEIPCGFDMNHWPHTLUDCTOEEIKLWRXFWHCIBIVZFPTFTSZGPRHHERFSIOGNZQRSJTRKKZYGPNUGZPZPRJDJIOGNFZTLOKEJSPRHIHVOLWHIWFPZRHWSRQLPMOIEJHLOIACOELSHEXXJWRDAEGTWHXLCFLRHUIXXCIWIOLWZRSIHZQRMRDKERHMGIHRWZYFEAGHCGCBPRQJPCHTDLWPWDNURWPOGSCDDXMTAIDYHWALSHEXVPTYDWJCUTYDEAOHSGHYXWCACOELSEAGHCACGKXRTRUQATNLRRUOIWSFSIWVHYEZATYHDIJXCVSCIGXDVQEWUTKBRELSCENOLACUEMRWYHXOELYGCGPFULXSPMVUTGOHEVPDXCQEJXCZWKACRQXVTUEITXHTSKZPPZXNDBMSCZYFXPMHWEIGZMHGIXKESFNOLJPXSAIDLYEHTDZQ"""
 
-print("Hey")
-
 trigramDict = {}
 offSetDict = {}
 offSetMap = {}
@@ -75,6 +73,21 @@ en_freq = {
 25: 0.00074
  }
 
+# print "Number of arguments:", len(sys.argv), "arguments."
+# print ("Argument List:", str(sys.argv))
+
+if (len(sys.argv) is not 2):
+	print("NEED 1 ARGUMENTS (FILENAME)")
+	exit()
+
+args = str(sys.argv)
+filename = sys.argv[1]
+
+file = open(filename)
+all_of_it = file.read()
+
+
+# print(all_of_it)
 
 
 def shift(symbol, offset):
@@ -103,6 +116,14 @@ def compareFrequencies(frequencies):
 		# print(en_freq[key])
 		# print(frequencies[key])
 		total = total + abs(frequencies[key] - en_freq[key])
+	return total
+
+def getVariance(frequencies):
+	total = 0
+	for key in frequencies.keys():
+		# print(en_freq[key])
+		# print(frequencies[key])
+		total = total + (abs(frequencies[key] - en_freq[key]) * abs(frequencies[key] - en_freq[key]))
 	return total
 
 def getFrequencies(cipher):
@@ -171,27 +192,34 @@ def decrypt(cipher, key):
 def analyzeAllKeys(cipher):
 	minimum = sys.float_info.max
 	key = ""
-	for i in range(2, int(len(cipher) / 2)):
+	print("PARSING...")
+	for i in range(1, int(len(cipher) / 2)):
 		infostring = "Currently Parsing " + str(i)
-		print(infostring)
+		# print(infostring)
 		score, newkey = analyzeString(cipher, i)
-		print(score)
+		# print(score)
 		if (score < minimum):
 			key = newkey
 			# print(key)
 			# print(decrypt(cipher, key))
 			minimum = score
 	# print(cipher)
+	print("KEY " + key)
 	print(decrypt(cipher, key))
 
 
 
 cipher2 = """ZNKEKRRUCLUMZNGZXAHYOZYHGIQAVUTZNKCOTJUCVGTKYZNKEKRRUCYSUQKZNGZXAHYOZYSAFFRKUTZNKCOTJUCVGTKYROIQKJOZYZUTMAKOTZUZNKIUXTKXYULZNKKBKTOTMROTMKXKJAVUTZNKVUURYZNGZYZGTJOTJXGOTYRKZLGRRAVUTOZYHGIQZNKYUUZZNGZLGRRYLXUSINOSTKEYYROVVKJHEZNKZKXXGIKSGJKGYAJJKTRKGVGTJYKKOTMZNGZOZCGYGYULZUIZUHKXTOMNZIAXRKJUTIKGHUAZZNKNUAYKGTJLKRRGYRKKV"""
 
-minimum, offset = analyzeFreq(cipher2)
+# minimum, offset = analyzeFreq(cipher2)
 # print(minimum)
 # print(offset)
 # print(decrypt(cipher2, "G"))
 # print(analyzeAllKeys(cipher2))
 analyzeAllKeys(cipher)
 # assume that the answer is 21 in terms of length 
+
+
+# freqDict = getFrequencies(tempArr)
+# print(freqDict)
+# currFreq = getVariance(freqDict)
